@@ -1,31 +1,24 @@
-package task_cancel
+package context_test
 
 import (
+    "context"
     "fmt"
     "sync"
     "testing"
     "time"
 )
 
-func isCancel(ch chan struct{}) bool {
+func isCancel(ctx context.Context) bool {
     select {
-    case <-ch:
+    case <- ctx.Done():
         return true;
     default:
         return false;
     }
 }
 
-func cancel1(ch chan struct{}) {
-    ch<-struct{}{}
-}
-
-func cancel2(ch chan struct{}) {
-    close(ch)
-}
-
-func TestCancel(t *testing.T) {
-    ch := make(chan struct{}, 1)
+func TestContext(t *testing.T) {
+    ctx, cancel := context.WithCancel(context.Background())
     wg := sync.WaitGroup{}
     for i := 0; i < 5; i++ {
         wg.Add(1)
@@ -48,4 +41,5 @@ func TestCancel(t *testing.T) {
     cancel2(ch)
     wg.Wait()
     fmt.Println("success cancelled all")
+    
 }

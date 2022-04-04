@@ -3,9 +3,9 @@ import "testing"
 import "github.com/easierway/concurrent_map"
 
 func TestConcurrentMap(t *testing.T) {
-	m := concurrent_map.CreateConcurrentMap(99)
-	m.Set(concurrent_map.StrKey("key"), 10)
-	t.Log(m.Get(concurrent_map.StrKey("key")))
+    m := concurrent_map.CreateConcurrentMap(99)
+    m.Set(concurrent_map.StrKey("key"), 10)
+    t.Log(m.Get(concurrent_map.StrKey("key")))
 }
 
 // 在go111module为off的情况
