@@ -10,10 +10,10 @@ import (
 
 func isCancel(ctx context.Context) bool {
     select {
-    case <- ctx.Done():
-        return true;
+    case <-ctx.Done():
+        return true
     default:
-        return false;
+        return false
     }
 }
 
@@ -22,24 +22,19 @@ func TestContext(t *testing.T) {
     wg := sync.WaitGroup{}
     for i := 0; i < 5; i++ {
         wg.Add(1)
-        go func(i int , ch chan struct{}) {
+        go func(i int, ctx context.Context) {
             for {
-                if isCancel(ch){
-                    break;
+                if isCancel(ctx) {
+                    break
                 }
+
                 time.Sleep(time.Millisecond * 5)
             }
-            fmt.Println("Cancelled i = ", i)
+            fmt.Printf("i = %v is canceled\n", i)
             wg.Done()
-        }(i, ch)
+        }(i, ctx)
     }
 
-    // 接受者并不知道有多少个，也不知道发多少标识，接受者才能全部关闭
-    // cancel1(ch)
-
-    // 关闭通道
-    cancel2(ch)
+    cancel()
     wg.Wait()
-    fmt.Println("success cancelled all")
-    
 }
