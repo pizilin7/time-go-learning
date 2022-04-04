@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+
 func GetFibonacci(n int) ([]int, error) {
 	if n < 2 || n > 100 {
 		return nil, errors.New("n should b [2,100]")
